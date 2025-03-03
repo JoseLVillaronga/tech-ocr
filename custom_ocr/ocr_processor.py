@@ -103,19 +103,19 @@ class OCRProcessor:
                 image_base64 = base64.b64encode(img.read()).decode()
             
             system_prompt = """Eres un sistema de OCR especializado en corrección de texto.
-            INSTRUCCIONES ESTRICTAS:
-            1. NO añadas texto introductorio
-            2. NO agregues texto que no esté en la imagen
-            3. NO traduzcas ni modifiques el contenido
-            4. Mantén EXACTAMENTE el formato original
-            5. Corrige errores de OCR comparando con la imagen
-            6. Preserva números de página y espaciado"""
-
-            user_prompt = f"""TEXTO A CORREGIR:
-            {text_tesseract}
+INSTRUCCIONES ESTRICTAS:
+1. NO añadas texto introductorio.
+2. NO agregues texto que no esté en la imagen.
+3. NO traduzcas ni modifiques el contenido.
+4. Mantén EXACTAMENTE el formato original.
+5. Corrige errores de OCR comparando con la imagen.
+6. Devuelve únicamente el texto en formato plano, sin ningún formato adicional."""
             
-            Corrige los errores de OCR manteniendo el formato original."""
+            user_prompt = f"""TEXTO A CORREGIR:
+{text_tesseract}
 
+Corrige los errores de OCR manteniendo el formato original."""
+            
             response = requests.post(
                 self.base_url,
                 json={
@@ -175,8 +175,8 @@ class OCRProcessor:
         word_accuracy = len(common_words) / max(len(words1), len(words2))
         
         return {
-            'similarity_ratio': ratio * 100,
-            'word_accuracy': word_accuracy * 100,
+            'similarity_ratio': ratio,
+            'word_accuracy': word_accuracy,
             'common_words': len(common_words),
             'total_words_original': len(words1),
             'total_words_extracted': len(words2)
